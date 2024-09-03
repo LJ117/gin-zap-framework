@@ -2,35 +2,32 @@ package pg
 
 import (
 	"fmt"
+	"web_app/settings"
+
+	"go.uber.org/zap"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/spf13/viper"
-
 	_ "github.com/lib/pq"
 )
 
 var pgDB *sqlx.DB
 
-func Init() (err error) {
+func Init(cfg *settings.PostgresConfig) (err error) {
 	//"user=bob password=secret host=1.2.3.4 port=5432 dbname=mydb sslmode=verify-full"
-	user := viper.GetString("postgres.user")
-	password := viper.GetString("postgres.user")
-	host := viper.GetString("postgres.host")
-	port := viper.GetInt("postgres.port")
-	dbname := viper.GetString("postgres.dbname")
-	sslmode := viper.GetString("postgres.sslmode")
 
-	dsn := fmt.Sprintf("user=%s password=%s host=%s port=%d dbname=%s sslmode=%s", user, password, host, port, dbname, sslmode)
+	dsn := fmt.Sprintf("user=%s password=%s host=%s port=%d dbname=%s sslmode=%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.SSLMode)
 
 	pgDB, err = sqlx.Connect("postgres", dsn)
 	if err != nil {
 		return
 	}
 
-	maxOpenConns := viper.GetInt("postgres.max_open_conns")
-	maxIdleConns := viper.GetInt("postgres.max_idle_Conns")
+	if err = pgDB.Ping(); err != nil {
+		zap.L().Error("ping postgres failed", zap.Error(err))
+		return err
+	}
 
-	pgDB.SetMaxOpenConns(maxOpenConns)
-	pgDB.SetMaxIdleConns(maxIdleConns)
+	pgDB.SetMaxOpenConns(cfg.MaxOpenConns)
+	pgDB.SetMaxIdleConns(cfg.MaxIdleConns)
 	return
 }

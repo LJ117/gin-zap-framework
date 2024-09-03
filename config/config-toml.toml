@@ -1,0 +1,40 @@
+[app]
+name = "web_app"
+model = "dev" # prod
+gin_model = "debug"# "debug"; "release"; "test"
+port = 8081
+print_stack_info = true
+version = "1.0.0"
+
+[log]
+level = "debug" # DebugLevel= "info";"warn";"error";"dpanic";"panic";"fatal"
+filename = "web_app.log"
+max_size = 200 # MB
+max_age = 30 # day
+max_backups = 7 # the max backup number
+
+[mysql]
+host = "127.0.0.1"
+port = 13306
+user = "root"
+password = "root"
+dbname = "sql_demo"
+max_open_conns = 20
+max_idle_conns = 10
+
+[postgres]
+host = "127.0.0.1"
+port = 13306
+user = "root"
+password = "root"
+dbname = "sql_demo"
+sslmode = "disable"
+max_open_conns = 20
+max_idle_Conns = 10
+
+[redis]
+host = "127.0.0.1"
+port = 16379
+password = ""
+db_index = 0
+pool_size = 100

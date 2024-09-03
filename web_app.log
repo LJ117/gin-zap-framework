@@ -1,5 +1,0 @@
-{"level":"ERROR",
-"time":"2024-09-03T12:32:46.847+0800",
-"caller":"mysql/mysql.go:27",
-"msg":"connect mysql failed",
-"error":"dial tcp 127.0.0.1:13306: connect: connection refused"}

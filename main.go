@@ -31,7 +31,7 @@ func main() {
 		return
 	}
 	// 2. init log
-	if err := logger.Init(); err != nil {
+	if err := logger.Init(settings.SysCfg.LogConfig); err != nil {
 		fmt.Printf("Init logger failed, err: %v\n", err)
 		return
 	}
@@ -40,21 +40,21 @@ func main() {
 	}(zap.L())
 
 	// 3. init DB(MySQL,PG) Connect
-	if err := mysql.Init(); err != nil {
+	if err := mysql.Init(settings.SysCfg.MySQLConfig); err != nil {
 		fmt.Printf("Init mysql failed, err: %v\n", err)
 		return
 	}
 	defer mysql.Close() //free to connect
 
 	// 4. init Redis Connect
-	if err := redis.Init(); err != nil {
+	if err := redis.Init(settings.SysCfg.RedisConfig); err != nil {
 		fmt.Printf("Init redis failed, err: %v\n", err)
 		return
 	}
 	defer redis.Close() //free to connect
 
 	// 5. register Routers
-	r := routes.Setup()
+	r := routes.Setup(settings.SysCfg.AppConfig)
 
 	// 6. start serving (graceful terminate)
 	svcPort := viper.GetInt("app.port")
@@ -62,6 +62,7 @@ func main() {
 		Addr:    fmt.Sprintf(":%d", svcPort),
 		Handler: r,
 	}
+
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			zap.L().Fatal("ListenAndServe", zap.Error(err))

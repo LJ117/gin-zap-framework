@@ -4,6 +4,7 @@ app:
   gin_model: "debug"# "debug"; "release"; "test"
   port: 8081
   print_stack_info: true
+  version: "1.0.0"
 
 log:
   level: "debug" # DebugLevel: "info";"warn";"error";"dpanic";"panic";"fatal"
@@ -27,15 +28,13 @@ postgres:
   user: "root"
   password: "root"
   dbname: "sql_demo"
-  sslmode: disable #
+  sslmode: "disable"
   max_open_conns: 20
   max_idle_Conns: 10
-
-
 
 redis:
   host: "127.0.0.1"
   port: 16379
   password: ""
-  db: 0
+  db_index: 0
   pool_size: 100
