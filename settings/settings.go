@@ -18,12 +18,25 @@ var SysCfg = new(SystemConfig)
 /* Manage config file by Viper*/
 
 func Init() (err error) {
-	viper.SetConfigFile("config/config.toml") // ab path, 本地使用建议这种形式, 不受 viper.AddConfigPath() 的影响
-	//viper.SetConfigType("yaml")
-	//viper.SetConfigName("config")// 只是找同名文件不包含后缀, 因此可能会有文件冲突存在, 同一目录下 config.yaml & config.toml 同时存在会报错
-	//viper.SetConfigType("toml")// 专用于从远程获取配置信息时指定配置文件类型, 本地不生效, 本地要指定后缀使用 viper.SetConfigFile()
-	//viper.SetConfigName("config-toml")
-	viper.AddConfigPath("config") // the project's root path
+
+	// 方式1: 直接指定配置文件路径（相对路径或绝对路径）
+	// 相对路径
+	viper.SetConfigFile("config/config.toml")
+	// 绝对路径
+	//viper.SetConfigFile("/home/seven/LearnSpace/Bilibil/Qimi/web_app/config/config.yaml")
+
+	// 方式2: 指定配置文件名和配置文件的位置，viper自行查找可用的配置文件
+	// 配置文件名不需要带后缀
+	//viper.SetConfigName("config")
+
+	// 配置文件位置可配置多个
+	//viper.AddConfigPath(".")
+	//viper.AddConfigPath("./cong")
+
+	// 专用于从远程获取配置信息时指定配置文件类型, 本地不生效
+	// 配合远程配置中心使用，告诉viper当前的数据使用什么格式解析
+	//viper.SetConfigType("toml")
+
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf("viper.ReadInConfig() failed:%v\n", err)
 		return err

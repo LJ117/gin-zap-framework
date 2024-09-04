@@ -5,6 +5,8 @@ verify:
 test:
 	go test ./...
 demo-docker-start: mysql redis
+demo-docker-restart:
+	docker container restart web-app-redis web-app-mysql
 demo-docker-stop:
 	docker container stop web-app-redis web-app-mysql
 demo-docker-rm: demo-docker-stop
