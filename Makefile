@@ -1,5 +1,5 @@
 build: verify
-	go build ./...
+	go build -o web_app_exe .
 verify:
 	go mod verify
 test:

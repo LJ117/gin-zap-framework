@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -25,8 +26,14 @@ import (
 */
 
 func main() {
+
+	var configFilePath string
+	flag.StringVar(&configFilePath, "config", "config/config.toml", "config file path")
+	flag.StringVar(&configFilePath, "c", "config/config.toml", "config file path(shorthand)")
+	flag.Parse()
+
 	// 1. load config
-	if err := settings.Init(); err != nil {
+	if err := settings.Init(configFilePath); err != nil {
 		fmt.Printf("Init settings failed, err: %v\n", err)
 		return
 	}

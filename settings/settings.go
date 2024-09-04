@@ -17,11 +17,11 @@ var SysCfg = new(SystemConfig)
 
 /* Manage config file by Viper*/
 
-func Init() (err error) {
+func Init(filePath string) (err error) {
 
 	// 方式1: 直接指定配置文件路径（相对路径或绝对路径）
 	// 相对路径
-	viper.SetConfigFile("config/config.toml")
+	//viper.SetConfigFile("config/config.toml")
 	// 绝对路径
 	//viper.SetConfigFile("/home/seven/LearnSpace/Bilibil/Qimi/web_app/config/config.yaml")
 
@@ -30,12 +30,14 @@ func Init() (err error) {
 	//viper.SetConfigName("config")
 
 	// 配置文件位置可配置多个
-	//viper.AddConfigPath(".")
+	//viper.AddConfigPath(".") // 当前执行程序所在目录, 编译后可执行文件
 	//viper.AddConfigPath("./cong")
 
 	// 专用于从远程获取配置信息时指定配置文件类型, 本地不生效
 	// 配合远程配置中心使用，告诉viper当前的数据使用什么格式解析
 	//viper.SetConfigType("toml")
+
+	viper.SetConfigFile(filePath) // 使用 flag 读取配置文件
 
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf("viper.ReadInConfig() failed:%v\n", err)
